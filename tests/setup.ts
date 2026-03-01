@@ -20,7 +20,14 @@ import { OF } from '../src/models/OF.js';
  * import './setup';
  * ```
  */
+
+// Ces valeurs permettent à la validation (Zod ou autre) de passer
+process.env.JWT_SECRET = process.env.JWT_SECRET || 'testsecret'
+// MONGODB_URI temporaire pour satisfaire la validation
+process.env.MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/fake'
+
 let mongoServer: MongoMemoryServer;
+
 
 beforeAll(async () => {
   try {
@@ -34,8 +41,8 @@ beforeAll(async () => {
         //     skipMD5: true,
       },
       // Prevent auto-start issues and improve stability
-      autoStart: true,
-      launchTimeout: 30000,
+      //   autoStart: true,
+      //   launchTimeout: 30000,
     });
 
     // Wait a bit to ensure server is fully started
@@ -43,7 +50,9 @@ beforeAll(async () => {
 
     // Get the connection URI
     const mongoUri = mongoServer.getUri();
-    process.env.MONGODB_URI = mongoUri;
+    process.env.MONGODB_URI = mongoUri
+
+
 
     // Connect Mongoose to the in-memory database with timeout
     await mongoose.connect(mongoUri, {
