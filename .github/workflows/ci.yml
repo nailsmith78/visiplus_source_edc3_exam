@@ -4,9 +4,10 @@ on :
   push: 
     branches:
       - master
-    pull_request:
-        branches:
-         - master
+      
+  pull_request:
+    branches:
+      - master
 
 jobs: 
   tests:
@@ -19,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.Js ${{ matrix.node-version }}
-        uses: actions/steps-node@v4
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
