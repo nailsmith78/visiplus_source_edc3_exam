@@ -6,9 +6,9 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
       - PORT=3000
-      - MONGODB_URI=mongodb://mongo:27017/visiplus  # Utilise le nom du service "mongo" au lieu de "localhost"
+      - MONGODB_URI=mongodb://mongo:27017/visiplus
       - JWT_SECRET=your-super-secret-jwt-key-at-least-32-characters-long
       - JWT_EXPIRES_IN=20d
       - CORS_ORIGIN=*
