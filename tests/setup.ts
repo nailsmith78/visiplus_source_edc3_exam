@@ -43,6 +43,7 @@ beforeAll(async () => {
 
     // Get the connection URI
     const mongoUri = mongoServer.getUri();
+    process.env.MONGODB_URI = mongoUri;
 
     // Connect Mongoose to the in-memory database with timeout
     await mongoose.connect(mongoUri, {
