@@ -20,9 +20,30 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+      
+      - name: Debug environment variables
+        run: |
+            echo "JWT_SECRET length: ${#JWT_SECRET}"  # Affiche la longueur (doit être >= 32)
+            if [ ${#JWT_SECRET} -lt 32 ]; then
+              echo "❌ JWT_SECRET est trop court ou non défini !"
+              exit 1
+            else
+              echo "✅ JWT_SECRET est valide (longueur: ${#JWT_SECRET})"
+            fi
+        env:
+            JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
 
       - name: Run unit tests
         run: npm test
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}      # Injecte le secret
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}    # Injecte l'URI MongoDB
+          NODE_ENV: test                              # Définit l'environnement
+
+
+
+
 
       - name: Login to Docker Hub
         if: github.ref == 'refs/heads/master'
