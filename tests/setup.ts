@@ -21,7 +21,7 @@ import { OF } from '../src/models/OF.js';
  * ```
  */
 
-// Ces valeurs permettent à la validation (Zod ou autre) de passer
+// Ces valeurs permettent à la validation (Zod ou autre) de passer le CI en test
 process.env.JWT_SECRET = process.env.JWT_SECRET || 'testsecret'
 // MONGODB_URI temporaire pour satisfaire la validation
 process.env.MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/fake'

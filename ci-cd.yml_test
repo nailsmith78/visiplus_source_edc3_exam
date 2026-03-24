@@ -1,0 +1,53 @@
+name: CI/CD
+
+on : 
+  push: 
+    branches:
+      - master, 
+      
+  pull_request:
+    branches:
+      - master
+
+jobs: 
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.Js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests
+        run : npm test
+        env: 
+          JWT_SECRET: your-super-secret-jwt-key-at-least-32-characters-long
+
+  build:
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Builder l application
+        run: npm run build
+      - name: Sauvegarder l’artefact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-build
+          path: dist/
+
+  build:
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+     

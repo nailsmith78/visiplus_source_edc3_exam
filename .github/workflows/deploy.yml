@@ -1,0 +1,43 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ "main" ]  # Déclenche le déploiement après un push sur main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: nailsmith78
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: nailsmith78/jlarpy:latest  # Utilise votre image Docker Hub
+
+      - name: Deploy to server via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker pull nailsmith78/jlarpy:latest
+            docker stop visiplus-source-node || true
+            docker rm visiplus-source-node || true
+            docker run -d \
+              --name visiplus-source-node \
+              --network app-network \
+              -p 3000:3000 \
+              -e MONGODB_URI=${{ secrets.MONGODB_URI }} \
+              -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+              nailsmith78/jlarpy:latest
