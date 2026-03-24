@@ -4,12 +4,12 @@ services:
   app:
     build: .
     ports:
-      - "3000:3000"
+      - "${PORT}:${PORT}"
     environment:
       - NODE_ENV=production
-      - PORT=3000
-      - MONGODB_URI=mongodb://mongo:27017/visiplus
-      - JWT_SECRET=your-super-secret-jwt-key-at-least-32-characters-long
+      - PORT=${PORT}
+      - MONGODB_URI=${MONGODB_URI}
+      - JWT_SECRET=${JWT_SECRET}
       - JWT_EXPIRES_IN=20d
       - CORS_ORIGIN=*
     container_name: visiplus-source-node
