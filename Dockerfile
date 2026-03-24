@@ -24,9 +24,9 @@ COPY --from=builder /app/node_modules ./node_modules
 
 # Définit les variables d'environnement (pour la production)
 ENV NODE_ENV=production \
-    PORT=3000 \
-    MONGODB_URI=mongodb://mongo:27017/visiplus \
-    JWT_SECRET=your-super-secret-jwt-key-at-least-32-characters-long \
+    PORT={PORT} \
+    MONGODB_URI={MONGODB_URI}\
+    JWT_SECRET={JWT_SECRET} \
     JWT_EXPIRES_IN=20d \
     CORS_ORIGIN=*
 
@@ -35,8 +35,8 @@ STOPSIGNAL SIGTERM
 HEALTHCHECK --interval=30s --timeout=5s \
 CMD curl --fail http://localhost || exit 1
 
-# Expose le port utilisé par l'application (à adapter selon votre config)
-EXPOSE 3000
+# Expose le port utilisé par l'application
+EXPOSE {PORT}
 
 # Commande pour lancer l'application
 CMD ["npm", "start"]
