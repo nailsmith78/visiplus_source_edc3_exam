@@ -24,19 +24,14 @@ COPY --from=builder /app/node_modules ./node_modules
 
 # Définit les variables d'environnement (pour la production)
 ENV NODE_ENV=production \
-    PORT={PORT} \
-    MONGODB_URI={MONGODB_URI}\
-    JWT_SECRET={JWT_SECRET} \
+    PORT=3000 \
     JWT_EXPIRES_IN=20d \
     CORS_ORIGIN=*
 
 
-STOPSIGNAL SIGTERM
+RUN apk add --no-cache curl
 HEALTHCHECK --interval=30s --timeout=5s \
 CMD curl --fail http://localhost || exit 1
-
-# Expose le port utilisé par l'application
-EXPOSE {PORT}
 
 # Commande pour lancer l'application
 CMD ["npm", "start"]
