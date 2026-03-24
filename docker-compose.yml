@@ -22,7 +22,7 @@ services:
   mongo:
     image: mongo:6
     ports:
-      - "27017:27017"  # Expose le port 27017 sur votre machine hôte (optionnel si vous n'avez pas besoin d'y accéder depuis l'extérieur)
+      - "27017:27017" 
     volumes:
       - mongo_data:/data/db
     environment:
