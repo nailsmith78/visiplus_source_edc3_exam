@@ -97,7 +97,7 @@ describe('column', () => {
           "name": nameCol,
         })
         .expect(201);
-      console.log('reponse.body.data : ', response.body.data)
+      /*  console.log('reponse.body.data : ', response.body.data)*/
       expect(response.body).toHaveProperty('message', 'Column created successfully');
       expect(response.body.data).toHaveProperty('name', nameCol);
 
@@ -115,7 +115,7 @@ describe('column', () => {
         .set('Authorization', `Bearer ${authToken}`)
         .send({})
         .expect(400);
-      console.log('erreur creation ', response.body, ' fin de message')
+      /*console.log('erreur creation ', response.body, ' fin de message')*/
       expect(response.body.error).toBe('Validation error');
     });
   });
