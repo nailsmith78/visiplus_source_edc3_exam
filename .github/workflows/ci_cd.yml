@@ -21,18 +21,17 @@ jobs:
       - name: Install dependencies
         run: npm install
       
-      - name: Debug environment variables
-        run: |
-            echo "JWT_SECRET length: ${#JWT_SECRET}"  # Affiche la longueur (doit être >= 32)
-            if [ ${#JWT_SECRET} -lt 32 ]; then
-              echo "❌ JWT_SECRET est trop court ou non défini !"
-              exit 1
-            else
-              echo "✅ JWT_SECRET est valide (longueur: ${#JWT_SECRET})"
-            fi
+      # - name: Debug environment variables
+      #   run: |
+      #       echo "JWT_SECRET length: ${#JWT_SECRET}"  # Affiche la longueur (doit être >= 32)
+      #       if [ ${#JWT_SECRET} -lt 32 ]; then
+      #         echo "❌ JWT_SECRET est trop court ou non défini !"
+      #         exit 1
+      #       else
+      #         echo "✅ JWT_SECRET est valide (longueur: ${#JWT_SECRET})"
+      #       fi
         env:
             JWT_SECRET: ${{ secrets.JWT_SECRET }}
-
 
       - name: Run unit tests
         run: npm test
@@ -40,10 +39,6 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}      # Injecte le secret
           MONGODB_URI: ${{ secrets.MONGODB_URI }}    # Injecte l'URI MongoDB
           NODE_ENV: test                              # Définit l'environnement
-
-
-
-
 
       - name: Login to Docker Hub
         if: github.ref == 'refs/heads/master'
@@ -60,25 +55,26 @@ jobs:
           push: true
           tags: nailsmith78/jlarpy:latest
 
-  deploy:
-    needs: test-and-build  
-    if: github.ref == 'refs/heads/master'  # Déploie uniquement sur master
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to server via SSH
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            docker stop visiplus-source-node 2>/dev/null || true
-            docker rm visiplus-source-node 2>/dev/null || true
-            docker pull nailsmith78/jlarpy:latest
-            docker run -d \
-              --name visiplus-source-node \
-              --network app-network \
-              -p ${{ secrets.PORT }}:${{ secrets.PORT }} \
-              -e MONGODB_URI=${{ secrets.MONGODB_URI }} \
-              -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
-              nailsmith78/jlarpy:latest
+###### ne sert pas ici car pas d'environement serveur non payant (heroku payant), j'ai pris render ## impossible à tester  
+  # deploy:
+  #   needs: test-and-build  
+  #   if: github.ref == 'refs/heads/master'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Deploy to server via SSH
+  #       uses: appleboy/ssh-action@v1
+  #       with:
+  #         host: ${{ secrets.SSH_HOST }}
+  #         username: ${{ secrets.SSH_USERNAME }}
+  #         key: ${{ secrets.SSH_PRIVATE_KEY }}
+  #         script: |
+  #           docker stop visiplus-source-node 2>/dev/null || true
+  #           docker rm visiplus-source-node 2>/dev/null || true
+  #           docker pull nailsmith78/jlarpy:latest
+  #           docker run -d \
+  #             --name visiplus-source-node \
+  #             --network app-network \
+  #             -p ${{ secrets.PORT }}:${{ secrets.PORT }} \
+  #             -e MONGODB_URI=${{ secrets.MONGODB_URI }} \
+  #             -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+  #             nailsmith78/jlarpy:latest

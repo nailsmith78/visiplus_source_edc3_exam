@@ -1,0 +1,28 @@
+# render.yaml
+databases:
+  - name: visiplus-db
+    databaseName: visiplus
+    user: visiplus_user
+    plan: free  # Plan gratuit
+
+services:
+  - type: web
+    name: visiplus-backend
+    plan: free  # Plan gratuit
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: MONGODB_URI
+        fromDatabase:
+          name: visiplus-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true 
+      - key: JWT_EXPIRES_IN
+        value: 20d
+      - key: CORS_ORIGIN
+        value: "*"
