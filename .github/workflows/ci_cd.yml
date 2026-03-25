@@ -55,7 +55,8 @@ jobs:
           push: true
           tags: nailsmith78/jlarpy:latest
 
-###### ne sert pas ici car pas d'environement serveur non payant (heroku payant), j'ai pris render ## impossible à tester  
+###### ne sert pas ici car pas d'environement serveur non payant (heroku payant et d'autres), j'ai pris render  
+###### je n'utiliserais donc pas ici l'image construite dans docker Hub pour cette etude de cas
   # deploy:
   #   needs: test-and-build  
   #   if: github.ref == 'refs/heads/master'
