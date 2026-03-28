@@ -1,4 +1,4 @@
-name: CI/CD Pipeline with Tests
+name: CI/CD Pipeline with Tests , build, push on dockerHub si PR dev -> master
 
 on:
   push:
