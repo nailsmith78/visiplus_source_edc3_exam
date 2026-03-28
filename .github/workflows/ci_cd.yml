@@ -4,6 +4,7 @@ on:
   push:
     branches: ["development"]
   pull_request:
+    types: [closed]   # se déclenche quand la PR est fermée (merged ou closed)
     branches: ["master"]
 
 jobs:
@@ -40,16 +41,16 @@ jobs:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}    # Injecte l'URI MongoDB
           NODE_ENV: test                              # Définit l'environnement
   test-git-hib:
-    runs-on: ubunt-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Debug github pull Request
         run: |
-            echo "github.event_name" : ${{ github.event_name }}" 
-            echo "github.event.pull_request.merged" : ${{ github.event.pull_request.merged }}" 
-            echo "github.event.pull_request.base.ref" : ${{ github.event.pull_request.base.ref}}" 
-            echo "github.event.pull_request.head.ref " : ${{ github.event.pull_request.head.ref }}" 
+            echo "github.event_name : ${{ github.event_name }}" 
+            echo "github.event.pull_request.merged : ${{ github.event.pull_request.merged }}" 
+            echo "github.event.pull_request.base.ref : ${{ github.event.pull_request.base.ref}}" 
+            echo "github.event.pull_request.head.ref  : ${{ github.event.pull_request.head.ref }}" 
             # github.event.pull_request.merged == true on teste pas car pas forcement une merge request
-            echo "resultat condition " : ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'master' && github.event.pull_request.head.ref == 'development' }}
+            echo "resultat condition  : ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'master' && github.event.pull_request.head.ref == 'development' }}
          
   docker-build:
     runs-on: ubuntu-latest
@@ -63,7 +64,6 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
       - name: Build and push Docker image
-        if: github.ref == 'refs/heads/master'
         uses: docker/build-push-action@v5
         with:
           context: .
