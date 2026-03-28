@@ -39,12 +39,31 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}      # Injecte le secret
           MONGODB_URI: ${{ secrets.MONGODB_URI }}    # Injecte l'URI MongoDB
           NODE_ENV: test                              # Définit l'environnement
-    
+  
+  # test-git-hub:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Debug github pull Request
+  #       run: |
+  #         if [ "${{ github.event_name }}" = "pull_request" ]; then
+  #           echo "github.event_name: ${{ github.event_name }}"
+  #           echo "github.event.pull_request.merged: ${{ github.event.pull_request.merged }}"
+  #           echo "github.event.pull_request.base.ref: ${{ github.event.pull_request.base.ref }}"
+  #           echo "github.event.pull_request.head.ref: ${{ github.event.pull_request.head.ref }}"
+            
+  #           # github.event.pull_request.merged == true on ne teste pas ici car ce n'est pas forcément un merge
+  #           echo "resultat condition: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'master' && github.event.pull_request.head.ref == 'development' }}"
+  #         else
+  #           echo "Event is not a pull request"
+  #           echo "github.event_name: ${{ github.event_name }}"
+  #         fi
   docker-build:
     runs-on: ubuntu-latest
     needs: test
-    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master' && github.event.pull_request.head.ref == 'development' }}
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'master' && github.event.pull_request.head.ref == 'development' }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -52,10 +71,10 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
       - name: Build and push Docker image
-        if: github.ref == 'refs/heads/master'
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: Dockerfile
           push: true
           tags: nailsmith78/jlarpy:latest
 
