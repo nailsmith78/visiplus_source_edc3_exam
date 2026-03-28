@@ -74,21 +74,17 @@ CORS_ORIGIN=*
 ```bash
 docker-compose -f docker-compose.yml +docker-compose.dev.yml up --build 
 ```
-# deux conteneurs sont créés et relié par app-network
-
-# demarrage conteneurs (automatique)
-```bash
-docker compose up
-```
-
-# coupure conteneurs 
-```bash
-docker compose down
+# deux conteneurs sont créés et relié par app-network l'application et la BDD MongoDB
 
 # mongoDB est persistant avec la création d'un volume (défini dans le docker-compose)
  volumes:
       - mongo_data:/data/db
 ```
+
+3. l'image de production se fait uniquement via une Pull request de development vers master
+# récuperation de l'image build via le dev
+# l'image est pull vers l'environnement de production après validation CI
+.github\workflow\ci_cd.yml
 
 
 # Rappel des commandes
@@ -99,4 +95,12 @@ docker images                                         / lister vos images
 docker ps                                             / lister vos conteneurs
 
 
-4. lancement Production
+4. lancement Production via une Pull request de development vers master
+
+
+# résumé des actions : 
+# Dev branch (development) :push autorisé tests uniquement → pas de build Docker
+# PR vers master : tests uniquement → vérifie que le merge est safe (pas de push - non réalisé pour le moment)
+# Merge master : build + push Docker → image prod officielle
+# Pas de rebuild inutile si le dev modifie seulement du code JS/TS
+#Les secrets (JWT_SECRET, MONGODB_URI, DOCKER_HUB_*) sont injectés via GitHub Actions, pas dans le repo
