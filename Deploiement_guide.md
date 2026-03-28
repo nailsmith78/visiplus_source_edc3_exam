@@ -57,7 +57,7 @@ npm install
  
 # docker-compose.yml      /  environnement mongo commun
 # docker-compose.dev.yml  / application pour le developpement
-# docker-compose.prod.yml / applicaiton pour la production
+# docker-compose.prod.yml / application pour ke serveur de production
 
 
 2. Créer un fichier `.env.docker` à la racine du projet 
@@ -95,7 +95,7 @@ docker images                                         / lister vos images
 docker ps                                             / lister vos conteneurs
 
 
-4. lancement Production via une Pull request de development vers master
+4. lancement de la construction de l'image et dépot docker hub via une Pull request de development vers master
 
 
 # résumé des actions : 
@@ -104,3 +104,36 @@ docker ps                                             / lister vos conteneurs
 # Merge master : build + push Docker → image prod officielle
 # Pas de rebuild inutile si le dev modifie seulement du code JS/TS
 #Les secrets (JWT_SECRET, MONGODB_URI, DOCKER_HUB_*) sont injectés via GitHub Actions, pas dans le repo
+
+
+architecture final : 
+
+DEV
+docker-compose.dev.yml
+        │
+        │ build local
+        ▼
+   tests locaux
+
+        │
+        │ push git
+        ▼
+
+CI/CD (GitHub Actions)
+        │
+        │ tests
+        │ docker build (push → PR → merge)
+        │ docker push
+        ▼
+
+DockerHub
+        │
+        │
+        ▼
+
+PROD SERVER
+docker-compose.prod.yml
+image: nailsmith78/jlarpy:latest
+docker pull
+↓
+run container
