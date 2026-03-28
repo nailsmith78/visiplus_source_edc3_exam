@@ -5,15 +5,17 @@ services:
     build: .
     ports:
       - "${PORT}:3000"
-   # env_file: .env
-    environment:
-      - NODE_ENV=production
-      - PORT=${PORT}
-      - MONGODB_URI=${MONGODB_URI}
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_EXPIRES_IN=20d
-      - CORS_ORIGIN=*
-    container_name: visiplus-source-node
+    env_file: .env.docker
+    # environment:
+    #    - NODE_ENV=development
+    #    - PORT=${PORT}
+    #    - MONGODB_URI=${MONGODB_URI}
+    #    - JWT_SECRET=${JWT_SECRET}
+    #    - JWT_EXPIRES_IN=20d
+    #    - CORS_ORIGIN=*
+    volumes:
+      - .:/app
+      - /app/node_modules
     depends_on:
       - mongo
     restart: unless-stopped
@@ -23,7 +25,7 @@ services:
   mongo:
     image: mongo:6
     ports:
-      - "27017:27017" 
+      - "27017:27017"
     volumes:
       - mongo_data:/data/db
     environment:
@@ -39,4 +41,4 @@ volumes:
 
 networks:
   app-network:
-    driver: bridge
+  

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({ debug: false });
 
 /**
  * Environment variables schema validation using Zod.
@@ -15,11 +15,12 @@ dotenv.config();
  * console.log(env.PORT); // 3000
  * ```
  */
-
+/*
 console.log('ENV:', {
   NODE_ENV: process.env.NODE_ENV,
   JWT_SECRET: process.env.JWT_SECRET,
 });
+*/
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),

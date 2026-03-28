@@ -52,10 +52,10 @@ describe('column', () => {
         .set('Authorization', `Bearer ${authToken}`)
         .expect(200);
 
-      console.log('reponse data : ', response.body.data);
-
-      console.log('reponse message : ', response.body.message);
-
+      /*  console.log('reponse data : ', response.body.data);
+  
+        console.log('reponse message : ', response.body.message);
+  */
       expect(response.body).toHaveProperty('message', 'Columns retrieved successfully');
       expect(response.body.data).toHaveLength(2);
 

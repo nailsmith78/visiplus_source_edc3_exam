@@ -2,7 +2,7 @@ name: CI/CD Pipeline with Tests
 
 on:
   push:
-    branches: ["master"]
+    branches: ["development"]
   pull_request:
     branches: ["master"]
 
