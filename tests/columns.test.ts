@@ -8,12 +8,11 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import { createApp } from '../src/app.js';
 import { Column } from '../src/models/Column.js';
-import { OF } from '../src/models/OF.js';
+
 import {
   createTestUser,
   getAuthToken,
   createTestColumn,
-  createTestOF,
 } from './helpers.js';
 import './setup.js';
 import { Types } from 'mongoose';
