@@ -9,8 +9,9 @@ services:
   - type: web
     name: visiplus-backend
     plan: free  # Plan gratuit
-    runtime: docker
-    dockerfilePath: ./Dockerfile
+    runtime: image
+    image:
+      url: docker.io/nailsmith78/jlarpy:latest
     envVars:
       - key: NODE_ENV
         value: production
