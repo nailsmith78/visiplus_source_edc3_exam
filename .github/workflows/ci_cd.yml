@@ -78,27 +78,6 @@ jobs:
           push: true
           tags: nailsmith78/jlarpy:latest
 
-###### ne sert pas ici car pas d'environement serveur non payant (heroku payant et d'autres), j'ai pris render  
-###### je n'utiliserais donc pas ici l'image construite dans docker Hub pour cette etude de cas
-  # deploy:
-  #   needs: test-and-build  
-  #   if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master' && github.event.pull_request.head.ref == 'development' }}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Deploy to server via SSH
-  #       uses: appleboy/ssh-action@v1
-  #       with:
-  #         host: ${{ secrets.SSH_HOST }}
-  #         username: ${{ secrets.SSH_USERNAME }}
-  #         key: ${{ secrets.SSH_PRIVATE_KEY }}
-  #         script: |
-  #           docker stop visiplus-source-node 2>/dev/null || true
-  #           docker rm visiplus-source-node 2>/dev/null || true
-  #           docker pull nailsmith78/jlarpy:latest
-  #           docker run -d \
-  #             --name visiplus-source-node \
-  #             --network app-network \
-  #             -p ${{ secrets.PORT }}:${{ secrets.PORT }} \
-  #             -e MONGODB_URI=${{ secrets.MONGODB_URI }} \
-  #             -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
-  #             nailsmith78/jlarpy:latest
+#DEPLOY##### 
+###### je utilise  ici l'image construite dans docker Hub pour cette etude de cas
+ 

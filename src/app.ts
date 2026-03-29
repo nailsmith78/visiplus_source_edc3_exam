@@ -4,6 +4,7 @@ import { env } from './config/env.js';
 import { logger } from './config/logger.js';
 import routes from './routes/index.js';
 import { errorHandler } from './middlewares/error.middleware.js';
+import { limiter } from './middlewares/security.middleware.js';
 
 /**
  * Creates and configures the Express application.
@@ -28,6 +29,12 @@ export function createApp(): Express {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
+  // sécurisation attaque Brut
+  if (env.NODE_ENV === 'test') {
+    app.set('trust proxy', 1);
+  }
+  app.use(limiter);
+
   // Request logging
   app.use((req, res, next) => {
     logger.info({ method: req.method, url: req.url }, 'Incoming request');
@@ -42,8 +49,10 @@ export function createApp(): Express {
   // API routes
   app.use('/api', routes);
 
+
   // Error handler (must be last)
   app.use(errorHandler);
+
 
   return app;
 }
