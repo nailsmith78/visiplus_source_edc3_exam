@@ -1,4 +1,4 @@
-# render.yaml
+# render.yaml -- ici inutile car on utilise l'image dockerHUB
 databases:
   - name: visiplus-db
     databaseName: visiplus

@@ -1,4 +1,5 @@
 version: '3.8'
+# si on souhaite utilise un environnement de prod autre que render
 
 services:
   app:
