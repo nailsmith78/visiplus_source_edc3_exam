@@ -33,5 +33,8 @@ RUN apk add --no-cache curl
 HEALTHCHECK --interval=30s --timeout=5s \
 CMD curl --fail http://localhost || exit 1
 
+#pour render
+EXPOSE 3000
+
 # Commande pour lancer l'application
 CMD ["npm", "start"]
