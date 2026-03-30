@@ -7,11 +7,11 @@ const app = createApp();
 
 describe("Security - Rate limit", () => {
 
-    it("suis je bloqué après 40 requetes", async () => {
+    it("suis je bloqué après 120 requetes", async () => {
 
         let blocked = false;
 
-        for (let i = 0; i < 40; i++) {
+        for (let i = 0; i < 120; i++) {
 
             const response = await request(app)
                 .post("/api/auth/login")
