@@ -7,7 +7,7 @@ on:
     branches: ["master"]
 
 jobs:
-  install:
+  install-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -20,7 +20,13 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-      
+      - name: Run unit tests
+        run: npm test
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}      # Injecte le secret
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}    # Injecte l'URI MongoDB
+          NODE_ENV: test                              # Définit l'environnement
+
       # - name: Debug environment variables
       #   run: |
       #       echo "JWT_SECRET length: ${#JWT_SECRET}"  # Affiche la longueur (doit être >= 32)
@@ -30,16 +36,7 @@ jobs:
       #       else
       #         echo "✅ JWT_SECRET est valide (longueur: ${#JWT_SECRET})"
       #       fi
-  test:
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - name: Run unit tests
-        run: npm test
-        env:
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}      # Injecte le secret
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}    # Injecte l'URI MongoDB
-          NODE_ENV: test                              # Définit l'environnement
+   
   
   # test-git-hub:
   #   runs-on: ubuntu-latest
