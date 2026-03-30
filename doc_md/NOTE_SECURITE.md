@@ -18,4 +18,4 @@
 # Vérifier qu’une route protégée renvoie bien un code 429 avec une attaque  
 1. tests/attack.test.ts
 
-# Pour la limitation d'accès ont pourra utilisé helmet 
+# Pour la limitation d'accès on pourra utiliser helmet 
