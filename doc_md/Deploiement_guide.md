@@ -7,38 +7,6 @@ Serveur Express avec MongoDB pour application Kanban.
 Ce guide décrit comment installer, exécuter et déployer l'application en local, dans Docker, et en production.
 
 
-## Structure du projet
-
-```
-├── src/
-│   ├── main.ts                 # Entrée principale (création du serveur)
-│   ├── server.ts               # Configuration Express
-│   ├── app.ts                  # Exporte Express app (pour tests)
-│   ├── config/
-│   │   ├── env.ts              # Chargement et validation des variables d'environnement
-│   │   ├── db.ts               # Connexion base de données (Mongoose)
-│   │   └── logger.ts           # Logger (Pino)
-│   ├── models/
-│   │   ├── OF.ts               # Modèle Ordre de Fabrication
-│   │   ├── Column.ts           # Modèle Colonne
-│   │   └── User.ts             # Modèle Utilisateur
-│   ├── routes/
-│   │   ├── index.ts            # Regroupe les routes (OF, Columns, Auth)
-│   │   ├── ofs.routes.ts
-│   │   ├── columns.routes.ts
-│   │   └── auth.routes.ts
-│   ├── controllers/
-│   │   ├── ofs.controller.ts   # Appelle les services (move, create, delete)
-│   │   └── columns.controller.ts
-│   └── middlewares/
-│       ├── auth.middleware.ts  # Vérification JWT
-│       ├── error.middleware.ts # Gestion globale des erreurs
-│       └── validate.middleware.ts # Validation Zod
-├── vitest.config.ts
-├── tsconfig.json
-└── package.json
-```
-
 ## Prérequis
 
 - Node.js (version 18 ou supérieure)
